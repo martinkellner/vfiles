@@ -1,0 +1,127 @@
+%%%%%%%%%%%%%%%%%
+% This is an example CV created using altacv.cls (v1.1, 21 November 2016) written by
+% LianTze Lim (liantze@gmail.com), based on the 
+% Cv created by BusinessInsider at http://www.businessinsider.my/a-sample-resume-for-marissa-mayer-2016-7/?r=US&IR=T
+% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%%%%%%%%%%%%%%%
+
+%% If you want to use \orcid or the
+%% academicons icons, add "academicons"
+%% to the \documentclass options. 
+%% Then compile with XeLaTeX or LuaLaTeX.
+% \documentclass[10pt,a4paper,academicons]{altacv}
+\documentclass[10pt,a4paper]{altacv}
+
+%% AltaCV uses the fontawesome and academicon fonts
+%% and packages. 
+%% See texdoc.net/pkg/fontawecome and http://texdoc.net/pkg/academicons for full list of symbols.
+%% When using the "academicons" option,
+%% Compile with LuaLaTeX for best results. If you
+%% want to use XeLaTeX, you may need to install
+%% Academicons.ttf in your operating system's font %% folder.
+
+
+% Change the page layout if you need to
+\geometry{left=1cm,right=9cm,marginparwidth=6.8cm,marginparsep=1.2cm,top=1cm,bottom=1cm}
+
+% Change the font if you want to.
+
+% If using pdflatex:
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[default]{lato}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=cyan,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+% If using xelatex or lualatex:
+% \setmainfont{Lato}
+
+% Change the colours if you want to
+\definecolor{VividPurple}{HTML}{2F9E43}
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\definecolor{LightGrey}{HTML}{666666}
+\colorlet{heading}{VividPurple}
+\colorlet{accent}{VividPurple}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
+
+% Change the bullets for itemize and rating marker
+% for \cvskill if you want to
+\renewcommand{\itemmarker}{{\small\textbullet}}
+\renewcommand{\ratingmarker}{\faCircle}
+
+%% sample.bib contains your publications
+\addbibresource{sample.bib}
+
+\begin{document}
+\name{MARTIN KELLNER}
+  \tagline{  }
+\photo{3.5cm}{25}
+\personalinfo{%
+  % Not all of these are required!
+  % You can add your own with \printinfo{symbol}{detail}
+  \quad{Born: 24.04.1995}\\
+  \location{Bratislava, Slovakia}\\
+  \email{martinkellner1@gmail.com}
+  \github{https://github.com/martinkellner}
+  % \phone{+33666312478}
+  
+   % I'm just making this up though.
+%   \orcid{orcid.org/0000-0000-0000-0000} % Obviously making this up too. If you want to use this field (and also other academicons symbols), add "academicons" option to \documentclass{altacv}
+}
+
+%% Make the header extend all the way to the right, if you want. Extend the right margin by 8cm (=6.8cm marginparwidth + 1.2cm marginparsep)
+\begin{adjustwidth}{}{-8cm}
+\makecvheader
+
+\end{adjustwidth}
+\cvsection{EDUCATION}
+\cvevent{}{High School - Electrical engineering}
+{2014-2010}{High Industrial School of Technology and Design Poprad}
+\cvevent{}{Bachelor - Applied Computer Science}
+{2014 -- 2017}{Faculty of Mathematics, Physics and Informatics - Comenius University Bratislava}
+Bachelor thesis: \href{http://alis.uniba.sk:8088/lib/item?id=chamo:653237&fromLocationLink=false&theme=Katalog}{Collaborative Code Writing in Eclipse} (Slovak only)
+
+\cvevent{} {Master - Applied Computer Science/Artificial Intelligence}
+{2017 -- 2019}{Faculty of Mathematics, Physics and Informatics - Comenius University Bratislava}
+\github{Master thesis: \href{https://raw.githubusercontent.com/martinkellner/master-thesis/master/thesis/kellner.pdf}{Learning Eye-Hand Coordinate Transformation in a Simulated Humanoid Robot}}
+
+%% Provide the file name containing the sidebar contents as an optional parameter to \cvsection.
+%% You can always just use \marginpar{...} if you do
+%% not need to align the top of the contents to any
+%% \cvsection title in the "main" bar.
+\cvsection[page1sidebar]{PROFESSIONAL EXPERIENCES}
+\cvevent{Software Developer}{Atos IT Solutions and Services s.r.o.}{September 2017 -- July 2019} {Bratislava}
+Student support during my studies. BackEnd and FrontEnd development.
+\newline
+\begin{itemize}
+\item BackEnd Development (Java/Spring, Gradle)
+\item FrontEnd Development (Angular2+)
+\item CICD (Gradle, Jenkins)
+\end{itemize}
+\divider
+\cvevent{AI/ML Engineer}{Raiffeisen Bank International AG}{August 2019 -- present} {Bratislava}
+Development and maintenance of a chatbot platform. PoC's in a few NLP topics.
+\newline
+\begin{itemize}
+\item Sentiment Analysis for the Russian Language - PoC - analyzing potential data sources, text pre-processing for pre-trained models, evaluating results, and presenting results to management.
+\item Named entity recognition - PoC - pre-processing of exported emails, labeling data based on regular expressions, and extracting of required information from text using the combination of regular expressions and a NER model built on top of \href{https://github.com/flairNLP/flair}{Flair}.
+\item Cooperating with others in developing a chatbot platform - Python3 scripts, Docker (including hardening of images), Helm charts, Bash scripting.
+\item Working on a few chatbot projects - Python3 scripts, deploying on Rancher/EKS, Gitlab CICD.
+\item Speech2Text for the Slovak language - PoC - Experimenting with the Wav2Vec-U paper from Facebook AI. 
+\end{itemize}
+\divider
+\end{document}
