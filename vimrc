@@ -3,6 +3,7 @@
 call plug#begin()
 Plug 'davidhalter/jedi-vim'                           "Autocomplete for python.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }   "Files and string finder.
+Plug 'junegunn/fzf.vim'
 Plug 'joshdick/onedark.vim'                           "Color theme.
 Plug 'cjrh/vim-conda'                                 "Conda environment switching.
 Plug 'dense-analysis/ale'                             "Python linting.
@@ -23,6 +24,16 @@ let g:pymode_python = 'python'
 " -----------------------
 set background=dark
 colorscheme onedark
+" Setting Font based on the actual platform.
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 12
+  elseif has("gui_macvim")
+    set guifont=Menlo\ Regular:h14
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
+endif
 
 " CONTROL SETTINGS
 " -----------------------
@@ -56,6 +67,11 @@ nnoremap <A-s> :set spell spelllang=en<CR>
 " Spell control turn off.
 nnoremap <A-d> :set nospell<CR>
 
+" Set search matches to be highlighed by default.
+:set hlsearch
+" Press Space to turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
 " AUTOCOMMANDS
 " -----------------------
 " Removing all trailing whitespace on write.
@@ -69,5 +85,17 @@ set noundofile
 " PLUGINS
 " -----------------------
 " Fuzzyfinder settings
+" Set fzf to becomes a simple selector interface rather than a "fuzzy finder" when doing search with Rg.
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
+
 " Mapping for FuzzyFinder
-nnoremap <silent> <C-f> :FZF<CR>
+nnoremap <silent> <Leader>f :Rg<CR>
+nnoremap <silent> <C-f> :Files<CR>
+let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
