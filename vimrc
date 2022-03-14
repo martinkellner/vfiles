@@ -68,12 +68,8 @@ nnoremap <A-s> :set spell spelllang=en<CR>
 " Spell control turn off.
 nnoremap <A-d> :set nospell<CR>
 
-" Set search matches to be highlighed by default.
-:set hlsearch
 " Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
-" Ensure line numbering is set on.
-:set number
 
 " AUTOCOMMANDS
 " -----------------------
@@ -84,6 +80,10 @@ autocmd BufWritePre * :%s/\s\+$//e
 " -----------------------
 " Turn off creating .un~ files.
 set noundofile
+" Ensure line numbering is set on.
+set number
+" Set search matches to be highlighed by default.
+set hlsearch
 
 " PLUGINS
 " -----------------------
