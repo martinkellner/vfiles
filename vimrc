@@ -87,6 +87,10 @@ set hlsearch
 
 " PLUGINS
 " -----------------------
+" Fuzzyfinder dependencies
+"
+" - ripgrep (https://github.com/BurntSushi/ripgrep)
+"
 " Fuzzyfinder settings
 "
 " This is okay in most cases because fzf is quite performant even with millions of lines,
