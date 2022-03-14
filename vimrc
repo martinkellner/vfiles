@@ -11,6 +11,7 @@ Plug 'jiangmiao/auto-pairs'                           "Autopairing for parenthes
 Plug 'preservim/nerdcommenter'                        "Adding comments.
 Plug 'sheerun/vim-polyglot'                           "Highlighting and more for many languages.
 Plug 'puremourning/vimspector'                        "Python debugger.
+Plug 'tpope/vim-fugitive'                             "Git wrapper into Vim.
 call plug#end()
 
 " PYTHON SETTINGS
@@ -71,6 +72,8 @@ nnoremap <A-d> :set nospell<CR>
 :set hlsearch
 " Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+" Ensure line numbering is set on.
+:set number
 
 " AUTOCOMMANDS
 " -----------------------
@@ -85,7 +88,10 @@ set noundofile
 " PLUGINS
 " -----------------------
 " Fuzzyfinder settings
-" Set fzf to becomes a simple selector interface rather than a "fuzzy finder" when doing search with Rg.
+"
+" This is okay in most cases because fzf is quite performant even with millions of lines,
+" but we can make fzf completely delegate its search responsibliity to ripgrep process by making it restart ripgrep
+" whenever the query string is updated. In this scenario, fzf becomes a simple selector interface rather than a "fuzzy finder".
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
@@ -94,8 +100,12 @@ function! RipgrepFzf(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
-
 " Mapping for FuzzyFinder
 nnoremap <silent> <Leader>f :Rg<CR>
 nnoremap <silent> <C-f> :Files<CR>
 let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+
+" Fugitive settings
+"
+" Set shortcut for Git blame to show authors of last commits per line.
+noremap <leader>b :Git blame<CR>
