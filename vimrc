@@ -67,7 +67,6 @@ nnoremap <A-t> :call OpenTerminal()<CR>
 nnoremap <A-s> :set spell spelllang=en<CR>
 " Spell control turn off.
 nnoremap <A-d> :set nospell<CR>
-
 " Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
@@ -75,6 +74,11 @@ nnoremap <A-d> :set nospell<CR>
 " -----------------------
 " Removing all trailing whitespace on write.
 autocmd BufWritePre * :%s/\s\+$//e
+augroup python
+    au!
+    " Set colomn line on 79 (based on PEP8 recommendations) for Python files.
+    autocmd FileType python set colorcolumn=80
+augroup END
 
 " VIM OPTIONS
 " -----------------------
@@ -84,6 +88,9 @@ set noundofile
 set number
 " Set search matches to be highlighed by default.
 set hlsearch
+" Set status line - note that is depends on Fugitive.
+set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+set laststatus=2
 
 " PLUGINS
 " -----------------------
