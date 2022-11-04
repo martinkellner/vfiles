@@ -5,21 +5,19 @@ Plug 'davidhalter/jedi-vim'                           "Autocomplete for python.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }   "Files and string finder.
 Plug 'junegunn/fzf.vim'
 Plug 'joshdick/onedark.vim'                           "Color theme.
-Plug 'cjrh/vim-conda'                                 "Conda environment switching.
-Plug 'dense-analysis/ale'                             "Python linting.
+Plug 'dense-analysis/ale'                             "Python linting. Ensure pylint is installed.
 Plug 'jiangmiao/auto-pairs'                           "Autopairing for parenthesis, quotes, ...
 Plug 'preservim/nerdcommenter'                        "Adding comments.
 Plug 'sheerun/vim-polyglot'                           "Highlighting and more for many languages.
-Plug 'puremourning/vimspector'                        "Python debugger.
 Plug 'tpope/vim-fugitive'                             "Git wrapper into Vim.
+Plug 'jmcantrell/vim-virtualenv'
 call plug#end()
 
 " PYTHON SETTINGS
 " -----------------------
 " Loading DLL on Windows
-" TODO: Put under conditions to work on win and linux as well.
-set pythonthreedll=$HOME\Anaconda3\python39.dll
-let g:pymode_python = 'python'
+set pythonthreedll=python39.dll
+"let g:pymode_python = 'python'
 
 " APPEARANCE SETTINGS
 " -----------------------
@@ -51,15 +49,15 @@ nnoremap <A-l> <C-w>l
 " Open a new file.
 nnoremap <silent> <C-t> :tabe<CR>
 
-" Open integrated terminal.
+" Open integrated terminal on vertical split.
+nnoremap <A-t> :vert term<CR>
+
 set splitright
 set splitbelow
 tnoremap <Esc> <C-\><C-n>
-au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+au BufEnter * if &buftype == 'vert terminal' | :startinsert | endif
 function! OpenTerminal()
-  " TODO: Add a condition to call zsh on linux machines.
-  :terminal
-  resize 10
+     :vert terminal
 endfunction
 nnoremap <A-t> :call OpenTerminal()<CR>
 
@@ -94,11 +92,11 @@ set laststatus=2
 
 " PLUGINS
 " -----------------------
-" Fuzzyfinder dependencies
+" FUZZYFINDER
+" Dependencies
+"   - ripgrep (https://github.com/BurntSushi/ripgrep)
 "
-" - ripgrep (https://github.com/BurntSushi/ripgrep)
-"
-" Fuzzyfinder settings
+" Settings
 "
 " This is okay in most cases because fzf is quite performant even with millions of lines,
 " but we can make fzf completely delegate its search responsibliity to ripgrep process by making it restart ripgrep
@@ -110,13 +108,37 @@ function! RipgrepFzf(query, fullscreen)
   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
+
 command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
+
 " Mapping for FuzzyFinder
 nnoremap <silent> <Leader>f :Rg<CR>
 nnoremap <silent> <C-f> :Files<CR>
-let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+"let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+let $FZF_DEFAULT_COMMAND = 'rg --files --follow --glob "!.git/*"'
 
-" Fugitive settings
+" FUGITIVE
+" Dependencies
+"   - git
+"
+" Settings
 "
 " Set shortcut for Git blame to show authors of last commits per line.
 noremap <leader>b :Git blame<CR>
+
+" ALE
+" Settings
+" Check Python files with flake8 and pylint.
+let b:ale_linters = ['flake8']
+" Fix Python files with autopep8 and yapf.
+let b:ale_fixers = ['autopep8', 'yapf']
+" Disable warnings about trailing whitespace for Python files.
+let b:ale_warn_about_trailing_whitespace = 0
+
+" JEDI
+" Settings
+let g:jedi#completions_enabled = 1
+let g:jedi#show_call_signatures = 0
+let g:jedi#popup_on_dot = 0
+" open the go-to function in split, not another buffer
+let g:jedi#use_splits_not_buffers = "right"
